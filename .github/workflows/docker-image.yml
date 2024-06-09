@@ -31,20 +31,22 @@ jobs:
       env:
         DOCKERHUB_USER: ${{secrets.DOCKERHUB_USER}}
         DOCKERHUB_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
-        NEW_VERSION: ${{steps.version.outputs.version}}
       run: |
         echo "Iniciando login"
         docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
-        echo "New version: $NEW_VERSION"
         echo "Fin del login"
     
 
-    # - name: Build Docker image
-    #   run: |
-    #     docker build . --file Dockerfile --tag luisefarfan/docker-graphql:0.0.1
-    #     docker build . --file Dockerfile --tag luisefarfan/docker-graphql:latest
+    - name: Build Docker image
+      env:
+        NEW_VERSION: ${{steps.version.outputs.version}}
+      run: |
+        docker build . --file Dockerfile --tag luisefarfan/docker-graphql:$NEW_VERSION
+        docker build . --file Dockerfile --tag luisefarfan/docker-graphql:latest
 
-    # - name: Push Docker image
-    #   run: |
-    #     docker push luisefarfan/docker-graphql:0.0.1
-    #     docker push luisefarfan/docker-graphql:latest
+    - name: Push Docker image
+      env:
+        NEW_VERSION: ${{steps.version.outputs.version}}
+      run: |
+        docker push luisefarfan/docker-graphql:$NEW_VERSION
+        docker push luisefarfan/docker-graphql:latest
