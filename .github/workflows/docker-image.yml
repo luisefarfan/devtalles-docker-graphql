@@ -25,6 +25,7 @@ jobs:
         minor_pattern: "feat:"
         format: "${major}.${minor}.${patch}-prerelease${increment}"
       # Para poder hacer referencia a este step y poder sacar sus outputs
+      # test
       id: version
 
     - name: Docker Hub login
